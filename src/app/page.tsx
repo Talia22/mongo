@@ -1,14 +1,10 @@
 'use client';
 import { useEffect, useState } from "react";
 import { fetchCars, addCar, updateCar, deleteCar } from '@/services/carServices';
-import styles from './styles/mainPage.module.css'
-
-interface Car {
-  _id: string;
-  model: string;
-  plate_number: string;
-  color: string;
-}
+import CarForm from '../components/CarForm/CarForm';
+import CarList from '../components/CarList/CarList';
+import { Car } from '../types/car';
+import styles from '@/styles/mainPage.module.css';
 
 export default function Home() {
   const [cars, setCars] = useState<Car[]>([]);
@@ -35,11 +31,6 @@ export default function Home() {
 
     loadCars();
   }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewCar((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,59 +69,8 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Cars</h1>
-      <form  className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="model"
-          value={newCar.model}
-          onChange={handleInputChange}
-          placeholder="Model"
-          className={styles.input}
-          required
-        />
-        <input
-          type="text"
-          name="plate_number"
-          value={newCar.plate_number}
-          onChange={handleInputChange}
-          placeholder="Plate Number"
-          className={styles.input}
-          required
-        />
-        <input
-          type="text"
-          name="color"
-          value={newCar.color}
-          onChange={handleInputChange}
-          placeholder="Color"
-          className={styles.input}
-          required
-        />
-        <button type="submit" className={styles.button}>{editCar ? 'Edit Car' : 'Add Car'}</button>
-      </form>
-
-      <div className={styles.carList}>
-      <div className={styles.header}>
-        <span>Model</span>
-        <span>Plate</span>
-        <span>Color</span>
-        <span>Edit</span>
-        <span>Delete</span>
-    </div>
-        {cars.length > 0 ? (
-          cars.map((car) => (
-            <div key={car._id} className={styles.carItem}>
-                <span>{car.model}</span>
-                <span>{car.plate_number}</span>
-                <span>{car.color}</span>              
-                <button className={styles.carItemButton} onClick={() => handleEdit(car)}>Edit</button>
-              <button className={styles.carItemButton}  onClick={() => handleDelete(car._id)} >Delete</button>
-            </div>
-          ))
-        ) : (
-          <p>No cars available.</p>
-        )}
-      </div>
+      <CarForm newCar={newCar} setNewCar={setNewCar} handleSubmit={handleSubmit} editCar={!!editCar} />
+      <CarList cars={cars} handleEdit={handleEdit} handleDelete={handleDelete} />
     </div>
   );
 }
