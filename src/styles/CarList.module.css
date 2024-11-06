@@ -1,0 +1,19 @@
+.carList {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 100px 100px; 
+    gap: 10px; 
+    align-items: center; 
+    background: #fff; 
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.header {
+    display: contents; 
+    font-weight: bold; 
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+}
